@@ -35,7 +35,7 @@ router.post("/", validateAuth, authorizeRoles("admin"), async (req, res) => {
 });
 
 
-router.get("/products/daily-intake", async (req, res) => {
+router.get("/daily-intake", async (req, res) => {
   try {
     const { weight, height, age, bloodType } = req.query;
 
@@ -61,7 +61,7 @@ router.get("/products/daily-intake", async (req, res) => {
 });
 
 
-router.post("/products/daily-intake", validateAuth, async (req, res) => {
+router.post("/daily-intake", validateAuth, async (req, res) => {
   try {
     const { weight, height, age, bloodType } = req.body;
     const userId = req.user._id;

@@ -1,29 +1,31 @@
 const passport = require("passport");
-const passportJWT = require("passport-jwt");
+const { Strategy, ExtractJwt } = require("passport-jwt");
 const User = require("./models/User");
 require("dotenv").config();
 
 const secret = process.env.JWT_SECRET;
 
-const ExtractJWT = passportJWT.ExtractJwt;
-const Strategy = passportJWT.Strategy;
+if (!secret) {
+  throw new Error("JWT_SECRET is not defined in the environment variables.");
+}
 
 const params = {
   secretOrKey: secret,
-  jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 };
 
-//! JWT Strategy:
+// JWT Strategy:
 passport.use(
-  new Strategy(params, function (payload, done) {
-    User.findById(payload.userId)
-      .then((user) => {
-        if (!user) {
-          return done(new Error("User not found"), false);
-        }
-        return done(null, user);
-      })
-      .catch((err) => done(err, false));
+  new Strategy(params, async (payload, done) => {
+    try {
+      const user = await User.findById(payload.userId || payload.id);
+      if (!user) {
+        return done(null, false, { message: "User not found" });
+      }
+      return done(null, user);
+    } catch (error) {
+      return done(error, false);
+    }
   })
 );
 
