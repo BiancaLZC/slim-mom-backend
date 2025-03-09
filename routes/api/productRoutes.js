@@ -35,7 +35,7 @@ router.post("/", validateAuth, authorizeRoles("admin"), async (req, res) => {
 });
 
 
-router.get("/api/products/daily-intake", async (req, res) => {
+router.get("/daily-intake", async (req, res) => {
   try {
     const { weight, height, age, bloodType } = req.query;
     console.log("Received Query Params:", { weight, height, age, bloodType }); 
