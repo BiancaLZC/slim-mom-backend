@@ -1,6 +1,5 @@
-const calculateCalories = (weight,weightDesire, height, age) => {
-    const weightNumber = parseFloat(weight);
-    const weightDesireNumber = parseFloat(weightDesire);
+const calculateCalories = (weight, height, age) => {
+  const weightNumber = parseFloat(weight);
   const heightNumber = parseFloat(height);
   const ageNumber = parseFloat(age);
 
@@ -11,7 +10,7 @@ const calculateCalories = (weight,weightDesire, height, age) => {
 
   // Formula pentru calculul caloriilor necesare
   const recCalories =
-    10 * weightNumber + 6.25 * heightNumber - 5 * ageNumber - 161 - 10 * (weightNumber - weightDesireNumber) ;
+    10 * weightNumber + 6.25 * heightNumber - 5 * ageNumber + 5;
   return Math.round(recCalories);
 };
 

@@ -38,15 +38,12 @@ router.post("/", validateAuth, authorizeRoles("admin"), async (req, res) => {
 router.get("/daily-intake", async (req, res) => {
   try {
     const { weight, height, age, bloodType } = req.query;
-    console.log("Received Query Params:", { weight, height, age, bloodType }); 
-
-    if (!weight || !height || !age || isNaN(weight) || isNaN(height) || isNaN(age)) {
-      return res.status(400).json({ message: "Please provide valid weight, height, and age" });
-    }
 
     const dailyKcal = calculateCalories(weight, height, age);
     if (dailyKcal === null) {
-      return res.status(400).json({ message: "Invalid calculation" });
+      return res
+        .status(400)
+        .json({ message: "Please provide valid weight, height, and age" });
     }
 
     const bloodTypeIndex = parseInt(bloodType, 10);
@@ -59,11 +56,9 @@ router.get("/daily-intake", async (req, res) => {
       notRecommendedProducts: products,
     });
   } catch (err) {
-    console.error("Server Error:", err);
     res.status(500).json({ message: err.message });
   }
 });
-
 
 
 router.post("/daily-intake", validateAuth, async (req, res) => {
